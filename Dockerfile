@@ -1,25 +1,10 @@
-FROM node:20-bullseye-slim
+FROM node:20-bookworm-slim
 
-RUN apt-get update && apt-get install -y \
+# Install native C++ FFmpeg on Debian 12 Bookworm (100% working mirrors)
+RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
-    libass9 \
-    fontconfig \
-    curl \
     ca-certificates \
-    fonts-noto-core \
-    fonts-noto-extra \
     && rm -rf /var/lib/apt/lists/*
-
-RUN mkdir -p /usr/share/fonts/truetype/viral && cd /usr/share/fonts/truetype/viral && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/poppins/Poppins-Bold.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/poppins/Poppins-ExtraBold.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/anton/Anton-Regular.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/bebasneue/BebasNeue-Regular.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/montserrat/Montserrat%5Bwght%5D.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/playfairdisplay/PlayfairDisplay-Italic%5Bwght%5D.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/caveat/Caveat%5Bwght%5D.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/apache/permanentmarker/PermanentMarker-Regular.ttf && \
-    fc-cache -f -v
 
 WORKDIR /app
 COPY package.json ./
