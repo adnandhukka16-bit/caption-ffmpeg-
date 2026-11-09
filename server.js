@@ -41,16 +41,16 @@ app.post('/render', upload.fields([{ name: 'video', maxCount: 1 }, { name: 'ass'
     '-y',
     '-i', vidFile.path,
     '-vf', `ass='${assEscaped}'`,
+    '-vsync', 'cfr',
     '-c:v', 'libx264',
     '-preset', 'ultrafast',
     '-tune', 'fastdecode',
-    '-crf', '23',
+    '-crf', '22',
     '-pix_fmt', 'yuv420p',
     '-c:a', 'copy',
     '-movflags', '+faststart',
     outPath
   ];
-
   const ff = spawn('ffmpeg', args);
   let errLog = '';
   ff.stderr.on('data', d => { errLog = (errLog + d.toString()).slice(-800); });
