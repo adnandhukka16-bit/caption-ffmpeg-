@@ -1,7 +1,9 @@
 {
   "name": "caption-ffmpeg",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "server.js",
+  "private": true,
+  "engines": { "node": ">=20" },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
