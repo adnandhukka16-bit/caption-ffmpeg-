@@ -7,25 +7,26 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
     fonts-noto-core \
+    fonts-inter \
     && rm -rf /var/lib/apt/lists/*
 
-# Install all Viral Fonts (Poppins, Montserrat, Anton, Bebas Neue, Playfair Display, Caveat, Permanent Marker, Inter)
+# Viral fonts: Poppins, Montserrat, Anton, Bebas Neue, Playfair Display, Caveat, Permanent Marker.
+# curl -f makes the build FAIL on a bad URL instead of saving an HTML error page as a .ttf
 RUN mkdir -p /usr/share/fonts/truetype/viral && cd /usr/share/fonts/truetype/viral && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/poppins/Poppins-Bold.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/poppins/Poppins-ExtraBold.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/anton/Anton-Regular.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/bebasneue/BebasNeue-Regular.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/montserrat/Montserrat%5Bwght%5D.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/playfairdisplay/PlayfairDisplay%5Bwght%5D.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/playfairdisplay/PlayfairDisplay-Italic%5Bwght%5D.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/caveat/Caveat%5Bwght%5D.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/apache/permanentmarker/PermanentMarker-Regular.ttf && \
-    curl -L -s -O https://github.com/google/fonts/raw/main/ofl/inter/Inter%5Bslnt,wght%5D.ttf && \
-    fc-cache -f -v
+    curl -fsSLO https://github.com/google/fonts/raw/main/ofl/poppins/Poppins-Bold.ttf && \
+    curl -fsSLO https://github.com/google/fonts/raw/main/ofl/poppins/Poppins-ExtraBold.ttf && \
+    curl -fsSLO https://github.com/google/fonts/raw/main/ofl/anton/Anton-Regular.ttf && \
+    curl -fsSLO https://github.com/google/fonts/raw/main/ofl/bebasneue/BebasNeue-Regular.ttf && \
+    curl -fsSLO "https://github.com/google/fonts/raw/main/ofl/montserrat/Montserrat%5Bwght%5D.ttf" && \
+    curl -fsSLO "https://github.com/google/fonts/raw/main/ofl/playfairdisplay/PlayfairDisplay%5Bwght%5D.ttf" && \
+    curl -fsSLO "https://github.com/google/fonts/raw/main/ofl/playfairdisplay/PlayfairDisplay-Italic%5Bwght%5D.ttf" && \
+    curl -fsSLO "https://github.com/google/fonts/raw/main/ofl/caveat/Caveat%5Bwght%5D.ttf" && \
+    curl -fsSLO https://github.com/google/fonts/raw/main/apache/permanentmarker/PermanentMarker-Regular.ttf && \
+    fc-cache -f
 
 WORKDIR /app
 COPY package.json ./
-RUN npm install --production
+RUN npm install --omit=dev
 COPY server.js ./
 
 EXPOSE 10000
